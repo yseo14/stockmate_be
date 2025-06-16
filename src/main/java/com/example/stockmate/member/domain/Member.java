@@ -1,6 +1,7 @@
 package com.example.stockmate.member.domain;
 
 import com.example.stockmate.global.entity.BaseEntity;
+import com.example.stockmate.global.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -50,10 +51,6 @@ public class Member extends BaseEntity {
 
     public boolean isSocialMember() {
         return !this.provider.equals("local");
-    }
-
-    public enum Role {
-        USER, ADMIN
     }
 
     public void updateNameAndImage(String name, String profileImage) {
