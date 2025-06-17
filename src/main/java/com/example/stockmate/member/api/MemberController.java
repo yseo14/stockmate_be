@@ -1,10 +1,12 @@
 package com.example.stockmate.member.api;
 
+import com.example.stockmate.global.response.ApiResponse;
+import com.example.stockmate.global.response.code.status.SuccessStatus;
 import com.example.stockmate.member.application.service.MemberService;
-import com.example.stockmate.member.dto.SignUpRequestDto;
+import com.example.stockmate.member.dto.SignUpRequest;
+import com.example.stockmate.member.dto.SignUpResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +19,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody @Valid SignUpRequestDto signUpRequestDto) {
-        memberService.signUp(signUpRequestDto);
-        return ResponseEntity.ok("회원가입 성공");
+    public ApiResponse<SignUpResponse> signup(@RequestBody @Valid SignUpRequest request) {
+        SignUpResponse signUpResponseDto = memberService.signUp(request);
+        return ApiResponse.onSuccess(SuccessStatus.MEMBER_SIGNUP_SUCCESS, signUpResponseDto);
     }
 }
