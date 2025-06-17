@@ -31,9 +31,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final RedisDao redisDao;
-
-    private static final Integer WEEK = 7;
 
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
@@ -66,7 +63,6 @@ public class MemberService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         JwtToken jwtToken = jwtUtils.generateToken(authentication);
-        redisDao.setValues(jwtToken.getRefreshToken(), jwtToken.getAccessToken(), Duration.ofDays(WEEK));
 
         return LoginMapper.toLoginResponse(member, jwtToken);
     }
