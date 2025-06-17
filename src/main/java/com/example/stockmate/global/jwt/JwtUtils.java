@@ -32,7 +32,6 @@ import org.springframework.util.StringUtils;
 @Component
 public class JwtUtils {
     private final Key key;
-    private final UserDetailsService userDetailsService;
     private final RedisDao redisDao; // RefreshToken 저장을 위해 Redis 사용
 
     private static final String GRANT_TYPE = "Bearer";
@@ -44,11 +43,9 @@ public class JwtUtils {
     private long REFRESH_TOKEN_EXPIRE_TIME;
 
     public JwtUtils(@Value("${jwt.secret}") String secretKey,
-                    UserDetailsService userDetailsService,
                     RedisDao redisDao) {
         byte[] keyBytes = Base64.getEncoder().encode(secretKey.getBytes());
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        this.userDetailsService = userDetailsService;
         this.redisDao = redisDao;
     }
 

@@ -21,7 +21,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //  Member
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT,"MEMBER4001", "이미 존재하는 이메일입니다."),
-
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4002", "해당 이메일로 가입한 사용자가 없습니다."),
+    PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, "MEMBER4003", "비밀번호가 일치하지 않습니다.")
     ;
 
 

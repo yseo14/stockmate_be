@@ -15,6 +15,7 @@ public enum SuccessStatus implements BaseCode {
 
     //  member
     MEMBER_SIGNUP_SUCCESS(HttpStatus.OK, "MEMBER2001", "회원가입에 성공했습니다."),
+    MEMBER_LOGIN_SUCCESS(HttpStatus.OK, "MEMBER2002", "로그인에 성공했습니다."),
 
     ;
 
