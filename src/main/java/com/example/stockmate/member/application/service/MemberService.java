@@ -2,7 +2,6 @@ package com.example.stockmate.member.application.service;
 
 import com.example.stockmate.global.jwt.JwtToken;
 import com.example.stockmate.global.jwt.JwtUtils;
-import com.example.stockmate.global.redis.RedisDao;
 import com.example.stockmate.member.Exception.EmailAlreadyExistException;
 import com.example.stockmate.member.Exception.MemberNotFoundException;
 import com.example.stockmate.member.Exception.PasswordNotMatchedException;
@@ -15,7 +14,6 @@ import com.example.stockmate.member.dto.SignUpRequest;
 import com.example.stockmate.member.dto.SignUpResponse;
 import com.example.stockmate.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
-import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
