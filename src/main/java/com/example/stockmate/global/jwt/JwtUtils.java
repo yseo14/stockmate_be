@@ -1,8 +1,10 @@
 package com.example.stockmate.global.jwt;
 
 import com.example.stockmate.global.redis.RedisDao;
+import com.example.stockmate.member.Exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -122,8 +124,12 @@ public class JwtUtils {
                     .build()
                     .parseClaimsJws(accessToken) // JWT 토큰 검증과 파싱을 모두 수행함
                     .getBody();
+        } catch (MalformedJwtException e) {
+            throw new InvalidTokenException("유효하지 않은 토큰 형식입니다.");
         } catch (ExpiredJwtException e) {
-            return e.getClaims();
+            throw new InvalidTokenException("토큰이 만료되었습니다.");
+        } catch (JwtException e) {
+            throw new InvalidTokenException("토큰이 유효하지 않습니다.");
         }
     }
 
@@ -174,12 +180,7 @@ public class JwtUtils {
     public String getUserNameFromToken(String token) {
         try {
             // 토큰 파싱해서 클레임 얻기
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
+            Claims claims = parseClaims(token);
             // 사용자 이름(subject) 반환
             return claims.getSubject();
         } catch (ExpiredJwtException e) {
@@ -207,4 +208,10 @@ public class JwtUtils {
         return null;
     }
 
+    public long getRemainingExpiration(String token) {
+        Claims claims = parseClaims(token);
+        Date expiration = claims.getExpiration();
+        long now = System.currentTimeMillis();
+        return expiration.getTime() - now;
+    }
 }
