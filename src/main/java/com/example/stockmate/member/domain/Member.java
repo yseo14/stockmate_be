@@ -1,6 +1,7 @@
 package com.example.stockmate.member.domain;
 
 import com.example.stockmate.global.entity.BaseEntity;
+import com.example.stockmate.global.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"provider", "providerId"})})
+@Table( uniqueConstraints = {@UniqueConstraint(columnNames = {"provider", "providerId"})})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String name;
@@ -36,17 +37,20 @@ public class Member extends BaseEntity {
     private String profileImage;
 
     @Column(nullable = false)
-    private String provider; // kakao, google
+    private String provider; // kakao, local 등
 
     @Column(nullable = false)
-    private String providerId;
+    private String providerId; // kakaoId or local일 경우 email
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role; // USER, ADMIN
 
-    public enum Role {
-        USER, ADMIN
+    @Column(length = 100)
+    private String password;
+
+    public boolean isSocialMember() {
+        return !this.provider.equals("local");
     }
 
     public void updateNameAndImage(String name, String profileImage) {
